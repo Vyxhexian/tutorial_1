@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\projects\\tutorial_1\\Tutorial\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{11A1EB85-005F-44A4-AD2D-F5666405EBF3}|Tutorial\\Tutorial.vcxproj|C:\\projects\\tutorial_1\\Tutorial\\Tutorial\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{11A1EB85-005F-44A4-AD2D-F5666405EBF3}|Tutorial\\Tutorial.vcxproj|solutionrelative:Tutorial\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|C:\\projects\\tutorial_1\\Tutorial\\.gitgnore||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|solutionrelative:.gitgnore||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\projects\\tutorial_1\\Tutorial\\Tutorial\\.gitignore",
+              "RelativeDocumentMoniker": "Tutorial\\.gitignore",
+              "ToolTip": "C:\\projects\\tutorial_1\\Tutorial\\Tutorial\\.gitignore",
+              "RelativeToolTip": "Tutorial\\.gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-07-15T14:05:32.123Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": ".gitgnore",
+              "DocumentMoniker": "C:\\projects\\tutorial_1\\Tutorial\\.gitgnore",
+              "RelativeDocumentMoniker": ".gitgnore",
+              "ToolTip": "C:\\projects\\tutorial_1\\Tutorial\\.gitgnore",
+              "RelativeToolTip": ".gitgnore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-07-15T14:03:40.924Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
