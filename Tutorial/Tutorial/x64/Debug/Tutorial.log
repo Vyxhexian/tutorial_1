@@ -1,0 +1,2 @@
+﻿  test.cpp
+C:\projects\tutorial_1\Tutorial\Tutorial\test.cpp(24,41): error C2065: 'framebuffer_size_callback': undeclared identifier
