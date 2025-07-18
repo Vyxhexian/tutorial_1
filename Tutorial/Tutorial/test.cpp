@@ -7,6 +7,12 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
+
+// resolution settings
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+
 int main()
 {
 	glfwInit(); // First we initialize GLFW 
@@ -15,7 +21,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL); //1 created glfw obj
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL); //1 created glfw obj
 
 	if (window == NULL)
 	{
@@ -34,6 +40,12 @@ int main()
 		return-1;
 	}
 
+
+
+
+
+
+	//--------------RENDER LOOP-----------------------
 	//render loop ( keep drawing images and handling user input until the program has been explicitly told to stop.)
 	//it's like update in unity
 	while (!glfwWindowShouldClose(window))
@@ -44,6 +56,9 @@ int main()
 
 		// rendering commands here
 		//...
+		//for example 
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //state-setting function
+		glClear(GL_COLOR_BUFFER_BIT); //state-using function
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);
