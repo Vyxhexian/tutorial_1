@@ -143,10 +143,17 @@ int main()
 
 
 	//Input vertex data
-	float vertices[] = { -0.5f,-0.5f, 0.0f,
-	0.5f,-0.5f, 0.0f,
-	0.0f, 0.5f, 0.0f
+	float vertices[] = { 0.0f,0.0f, 0.0f,
+	1.0f,0.0f, 0.0f,
+	0.5f, 0.8f, 0.0f,
+	
+	0.0f, 0.0f, 0.0f,
+	-1.0f,0.0f, 0.0f,
+	-0.5f, 0.8f, 0.0f
 	};
+
+
+
 
 
 
@@ -189,12 +196,12 @@ int main()
 	// 
 	// ---------------------------------------------------------
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);//you can safely unbind the VBO because the VAO has stored everything it needs.
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);//you can safely unbind the VBO because the VAO has stored everything it needs.
 
 
 	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0); //Some developers like to unbind to prevent accidental modification, others just leave it bound.
+	//glBindVertexArray(0); //Some developers like to unbind to prevent accidental modification, others just leave it bound.
 	// ---------------------------------------------------------
 
 
@@ -222,7 +229,7 @@ int main()
 		//drawing triangle
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
 
