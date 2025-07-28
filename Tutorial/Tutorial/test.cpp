@@ -143,9 +143,15 @@ int main()
 
 
 	//Input vertex data
-	float vertices[] = { -0.5f,-0.5f, 0.0f,
-	0.5f,-0.5f, 0.0f,
-	0.0f, 0.5f, 0.0f
+	float vertices[] = {
+	0.5f, 0.5f, 0.0f, // top right
+	0.5f,-0.5f, 0.0f, // bottom right
+	-0.5f,-0.5f, 0.0f, // bottom left
+	-0.5f, 0.5f, 0.0f // top left
+	};
+	unsigned int indices[] = { //we start from 0
+	0, 1, 3, // first triangle
+	1, 2, 3 // second triangle
 	};
 
 
@@ -165,6 +171,16 @@ int main()
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); //bind
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //upload vertex data
+
+
+	//EBO
+	unsigned int EBO;
+	glGenBuffers(1, &EBO); //ID
+
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO); //bind
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 
 
 
@@ -220,11 +236,15 @@ int main()
 
 
 		//drawing triangle
+		//glUseProgram(shaderProgram);
+		//glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		//draw rectangle with ebo
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
