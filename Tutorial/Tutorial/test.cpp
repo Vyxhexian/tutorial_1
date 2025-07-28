@@ -211,7 +211,7 @@ int main()
 
 
 		// rendering commands here
-		//...
+		//....
 		//for example 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //state-setting function
 		glClear(GL_COLOR_BUFFER_BIT); //state-using function
