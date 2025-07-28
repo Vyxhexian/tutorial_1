@@ -143,15 +143,18 @@ int main()
 
 
 	//Input vertex data
-	float vertices[] = { 0.0f,0.0f, 0.0f,
+	float vertices[] = { 
+	0.0f,0.0f, 0.0f,
 	1.0f,0.0f, 0.0f,
 	0.5f, 0.8f, 0.0f,
-	
+	};
+
+
+	float vertices2[] = {
 	0.0f, 0.0f, 0.0f,
 	-1.0f,0.0f, 0.0f,
 	-0.5f, 0.8f, 0.0f
 	};
-
 
 
 
@@ -175,16 +178,47 @@ int main()
 
 
 
+	//Linking Vertex Attributes
+	//what part of input data goes to which vertex attribute in vertex shader
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+
+
+
+
+
+
+
+
+
+
+	//for second triangle
+
+	//VAO
+	unsigned int VAO_2;
+	glGenVertexArrays(1, &VAO_2); //ID
+
+	glBindVertexArray(VAO_2); //bind
+
+
+
+	//VBO
+	unsigned int VBO_2;
+	glGenBuffers(1, &VBO_2); // generate ID
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_2); //bind
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW); //upload vertex data
 
 
 
 
 	//Linking Vertex Attributes
 	//what part of input data goes to which vertex attribute in vertex shader
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);  // changing "3 * sizeof(float)" to 0 is works too. it's like saying "vertex data is tightly packed we can also specify 0 as the vertex attribute's stride to let OpenGL figure it out"
 	glEnableVertexAttribArray(0);
 
+ 
 
 
 
@@ -228,8 +262,15 @@ int main()
 
 		//drawing triangle
 		glUseProgram(shaderProgram);
+
+
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+ 		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
+		glBindVertexArray(VAO_2); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 
 
 
@@ -237,7 +278,6 @@ int main()
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);  //this is last because presents the already-rendered frame to the screen.
 		glfwPollEvents();
-
 
 	}
 
