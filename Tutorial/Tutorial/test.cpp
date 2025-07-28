@@ -30,6 +30,15 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "}\n\0";
 
 
+
+const char* fragmentShaderSource2 = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
+"}\n\0";
+
+
 int main()
 {
 
@@ -106,6 +115,22 @@ int main()
 
 
 
+
+	//fragment shader 2 yellow
+
+	unsigned int fragmentShader2;
+	fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER); //ID
+
+	glShaderSource(fragmentShader2, 1, &fragmentShaderSource2, NULL); //attach
+	glCompileShader(fragmentShader2); //compile
+
+
+
+
+
+
+
+
 	// check for shader compile errors ---------------
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 	if (!success)
@@ -116,15 +141,32 @@ int main()
 
 
 
+
+
+
+
+
+
+
 	//Shader program
 	//link shaders
 
 	unsigned int shaderProgram;
 	shaderProgram = glCreateProgram(); //ID
 
+
+	unsigned int shaderProgram2;
+	shaderProgram2 = glCreateProgram(); //ID
+
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
+
+	glAttachShader(shaderProgram2, vertexShader);
+	glAttachShader(shaderProgram2, fragmentShader2);
+	glLinkProgram(shaderProgram2);
+
+
 
 	// check for linking errors  ---------------
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -136,7 +178,7 @@ int main()
 	//delete shaders.Shaders are no longer needed as separate objects, they're already part of the program.
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-
+	glDeleteShader(fragmentShader2);
 
 
 
@@ -212,7 +254,10 @@ int main()
 
 
 
-
+	//we do this 2 times because; 
+	// it's not global setting--it's stored in vao.
+	// it links the bound VBO (at time of call) to a vertex attribute.
+	// 
 	//Linking Vertex Attributes
 	//what part of input data goes to which vertex attribute in vertex shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);  // changing "3 * sizeof(float)" to 0 is works too. it's like saying "vertex data is tightly packed we can also specify 0 as the vertex attribute's stride to let OpenGL figure it out"
@@ -267,6 +312,7 @@ int main()
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
  		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		glUseProgram(shaderProgram2);
 
 		glBindVertexArray(VAO_2); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
 		glDrawArrays(GL_TRIANGLES, 0, 3);
