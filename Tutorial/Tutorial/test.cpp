@@ -54,11 +54,8 @@ int main()
 	}
 
 
-
 	//shader program set up.
 	shader ourShader("shader.vs", "shader.fs");
-
-
 
 
 
@@ -100,7 +97,7 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); //stride is 24 now ,
 	glEnableVertexAttribArray(0); // 0 = location 0
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));  //at the end offset is 12 
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));  //at the end offset is 12 
 	glEnableVertexAttribArray(1);
 
 
@@ -142,7 +139,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT); //state-using function
 
 
-
+		float offset = 0.5f;
+		ourShader.setFloat("xOffset", offset);
 
 		//use shader program
 		ourShader.use();
