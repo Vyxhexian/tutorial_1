@@ -144,7 +144,7 @@ int main()
 
 
 
-		//shader program
+		//use shader program
 		ourShader.use();
 
 		//drawing triangle
