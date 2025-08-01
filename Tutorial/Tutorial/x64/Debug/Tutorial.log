@@ -1,2 +1,5 @@
-﻿  test.cpp
+﻿  glad.c
+  shader.cpp
+  test.cpp
+  Generating Code...
   Tutorial.vcxproj -> C:\projects\Triangle\Tutorial\x64\Debug\Tutorial.exe
