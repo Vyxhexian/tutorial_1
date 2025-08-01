@@ -1,3 +1,2 @@
 ﻿  test.cpp
-C:\projects\Triangle\Tutorial\Tutorial\test.cpp(244,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Tutorial.vcxproj -> C:\projects\Triangle\Tutorial\x64\Debug\Tutorial.exe

@@ -1,6 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <C:\projects\Triangle\Tutorial\Tutorial\shader.h>
+
+
 #include <iostream>
 
 
@@ -13,27 +16,6 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 
-
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec3 aColor;\n"
-
-"out vec3 ourColor;\n"
-
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos, 1.0);\n"
-	"ourColor = aColor;\n"
-"}\0";
-
-
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec3 ourColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(ourColor, 1.0);\n"
-"}\n\0";
 
 
 int main()
@@ -64,7 +46,6 @@ int main()
 
 
 
-
 	// glad: load all OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -74,84 +55,8 @@ int main()
 
 
 
-
-
-
-
-
-
-	//first build and compile shader program
-	//vertex shader
-
-
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER); //ID
-
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL); //attach
-	glCompileShader(vertexShader); //compile
-
-
-
-
-
-
-	//checking for compile-time error ---------------
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" <<
-			infoLog << std::endl;
-	}
-
-
-
-
-
-	//fragment shader
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER); //ID
-
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL); //attach
-	glCompileShader(fragmentShader); //compile
-
-
-
-	// check for shader compile errors ---------------
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-
-
-	//Shader program
-	//link shaders
-
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram(); //ID
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	// check for linking errors  ---------------
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	//delete shaders.Shaders are no longer needed as separate objects, they're already part of the program.
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
+	//shader program set up.
+	shader ourShader("shader.vs", "shader.fs");
 
 
 
@@ -237,18 +142,10 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT); //state-using function
 
 
-		glUseProgram(shaderProgram);
 
 
-
-		float timeValue = glfwGetTime();
-		float greenValue = (sin(timeValue) / 2.0f) + 0.5f; //changes between 1-0
-
-		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor"); //get location of ourColor
-
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f); //ourColor location + 4 color value
-
-
+		//shader program
+		ourShader.use();
 
 		//drawing triangle
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
