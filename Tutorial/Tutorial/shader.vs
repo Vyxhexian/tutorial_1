@@ -6,8 +6,11 @@ out vec3 ourColor; //Data like color is passed from vertex shader to fragment sh
 
 uniform float xOffset;
 
+out vec3 aOurPos;
+
 void main()
 {
     gl_Position = vec4(aPos.x + xOffset, aPos.y, aPos.z, 1.0); // add the xOffset to the x position of the vertex position
     ourColor = aColor;
+    aOurPos = aPos;
 }
