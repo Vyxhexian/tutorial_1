@@ -124,10 +124,11 @@ int main()
 
 
 
-	unsigned int texture;
-	glGenTextures(1, &texture); //ID
+	unsigned int texture1;
+	glGenTextures(1, &texture1); //ID
 
-	glBindTexture(GL_TEXTURE_2D, texture); //bind
+
+	glBindTexture(GL_TEXTURE_2D, texture1); //bind
 
 
 	// set the texture wrapping parameters
@@ -143,16 +144,17 @@ int main()
 
 	//load texture
 	int width, height, nrChannels;
-	std::string path = "C:/assets/wall.jpg";
 
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+	stbi_set_flip_vertically_on_load(true); //without this texture flipped. tell stb_image.h to flip loaded texture's on the y-axis.
 
+	 
 
-	// 
+	unsigned char* data = stbi_load("C:/assets/wall.jpg", &width, &height, &nrChannels, 0);
+ 
 	if (data)
 	{
 		//generate texture
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data); 
 		//generate mipmaps
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
@@ -162,12 +164,62 @@ int main()
 	}
 
 
-	//free memory after
+	//free data
 	stbi_image_free(data);
 
+	   
 
 
 
+
+	unsigned int texture2;
+	glGenTextures(1, &texture2); //ID
+
+ 
+
+	glBindTexture(GL_TEXTURE_2D, texture2); //bind
+
+
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+
+	 
+
+
+	data = stbi_load("C:/assets/awesomeface.png", &width, &height,	&nrChannels, 0);
+
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+
+	 
+	//free memory after
+	stbi_image_free(data);
+	  
+
+
+
+
+	// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+// -------------------------------------------------------------------------------------------
+	ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+	// either set it manually like so:
+	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+	// or set it via the texture class
+	ourShader.setInt("texture2", 1);
 
 
 
@@ -207,17 +259,22 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //state-setting function
 		glClear(GL_COLOR_BUFFER_BIT); //state-using function
 
-		//bind texture
-		glBindTexture(GL_TEXTURE_2D, texture);
+		//activate the texture number you want and bind 
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
 
 
+		//render container
+		//------------------------------------------------------
 		//use shader program
 		ourShader.use();
-
 		//drawing triangle
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+		//------------------------------------------------------
 
 
 
