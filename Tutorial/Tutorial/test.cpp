@@ -66,7 +66,10 @@ int main()
 
 	//shader program set up.
 	shader ourShader("shader.vs", "shader.fs");
-
+	
+	
+	//for second square
+	shader ourShader2("shader.vs", "shader.fs");
 
 
 	//Input vertex data
@@ -255,6 +258,15 @@ int main()
 
 
 
+	//second square
+	ourShader2.use(); // don't forget to activate/use the shader before setting uniforms!
+	//2 ways to set the texture unit;
+	// 
+	// either set it manually like so:
+	glUniform1i(glGetUniformLocation(ourShader2.ID, "texture1"), 0);
+	// or set it via the texture class
+	ourShader2.setInt("texture2", 1);
+
 
 
 
@@ -354,19 +366,10 @@ int main()
 		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform"); //get the location of the uniform variable in the shader program
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans)); //set the uniform variable in the shader program with the value(trans)
 
-
-
-
-
-
-
-
-
+		 
 
 		// set the texture mix value in the shader  
 		ourShader.setFloat("mixVal", mixVal);
-
-
 
 
 
@@ -377,7 +380,42 @@ int main()
 		//drawing triangle
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+
+
+
+
+
+
+		// for second square
 		//------------------------------------------------------
+		//create transformations
+		glm::mat4 trans2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
+		trans2 = glm::scale(trans2, glm::vec3(sin((float)glfwGetTime()), sin((float)glfwGetTime()), sin((float)glfwGetTime()))); //scale to make it half
+
+		// get matrix's uniform location and set matrix
+		ourShader2.use();
+		unsigned int transformLoc2 = glGetUniformLocation(ourShader2.ID, "transform"); //get the location of the uniform variable in the shader program
+		glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(trans2)); //set the uniform variable in the shader program with the value(trans)
+
+		// set the texture mix value in the shader  
+		ourShader2.setFloat("mixVal", mixVal);
+
+		//render container
+		//------------------------------------------------------
+		//use shader program
+		ourShader2.use();
+		//drawing triangle
+		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//------------------------------------------------------
+
+
+
+
+
 
 
 
