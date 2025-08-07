@@ -9,6 +9,14 @@
 #include <iostream>
 
 
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
+
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -77,6 +85,7 @@ int main()
 
 
 
+	
 
 
 	//VAO
@@ -213,6 +222,21 @@ int main()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
 // -------------------------------------------------------------------------------------------
 	ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
@@ -225,6 +249,33 @@ int main()
 
 
 	float mixVal = 0;
+
+
+
+
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::rotate(trans, glm::radians(90.f), glm::vec3(0.0f, 0.0f, 1.0f)); //rotate trans around z-axis 90 degrees
+	trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f)); //scale to make it half
+
+
+
+	unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform"); //get the location of the uniform variable in the shader program
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans)); //set the uniform variable in the shader program with the value(trans)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
