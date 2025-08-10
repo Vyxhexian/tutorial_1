@@ -16,7 +16,6 @@
 
 
 
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -66,10 +65,7 @@ int main()
 
 	//shader program set up.
 	shader ourShader("shader.vs", "shader.fs");
-	
-	
-	//for second square
-	shader ourShader2("shader.vs", "shader.fs");
+
 
 
 	//Input vertex data
@@ -88,7 +84,6 @@ int main()
 
 
 
-	
 
 
 	//VAO
@@ -106,7 +101,7 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); //bind
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //upload vertex data
 
-	 
+
 
 	//EBO
 	unsigned int EBO;
@@ -159,14 +154,14 @@ int main()
 
 	stbi_set_flip_vertically_on_load(true); //without this texture flipped. tell stb_image.h to flip loaded texture's on the y-axis.
 
-	 
+
 
 	unsigned char* data = stbi_load("C:/assets/wall.jpg", &width, &height, &nrChannels, 0);
- 
+
 	if (data)
 	{
 		//generate texture
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data); 
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		//generate mipmaps
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
@@ -179,7 +174,7 @@ int main()
 	//free data
 	stbi_image_free(data);
 
-	   
+
 
 
 
@@ -187,7 +182,7 @@ int main()
 	unsigned int texture2;
 	glGenTextures(1, &texture2); //ID
 
- 
+
 
 	glBindTexture(GL_TEXTURE_2D, texture2); //bind
 
@@ -202,10 +197,10 @@ int main()
 
 
 
-	 
 
 
-	data = stbi_load("C:/assets/awesomeface.png", &width, &height,	&nrChannels, 0);
+
+	data = stbi_load("C:/assets/awesomeface.png", &width, &height, &nrChannels, 0);
 
 	if (data)
 	{
@@ -217,22 +212,30 @@ int main()
 		std::cout << "Failed to load texture" << std::endl;
 	}
 
-	 
+
 	//free memory after
 	stbi_image_free(data);
-	  
 
 
 
 
 
+	//------------------transformation matrices------------------
+
+	//model matrix
+	glm::mat4 model = glm::mat4(1.0f); //identity matrix
+	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //this matrix will rotate any vertex if they multiply
 
 
+	//view matrix
+	glm::mat4 view = glm::mat4(1.0f);
+	// note that we’re translating the scene in the reverse direction
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
 
-
-
-
+	//projection matrix
+	glm::mat4 projection;
+	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f); //perspective projection
 
 
 
@@ -243,36 +246,10 @@ int main()
 	// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
 // -------------------------------------------------------------------------------------------
 	ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
-	//2 ways to set the texture unit;
-	// 
 	// either set it manually like so:
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
 	// or set it via the texture class
 	ourShader.setInt("texture2", 1);
-
-
-	float mixVal = 0;
-
-
-
-
-
-
-	//second square
-	ourShader2.use(); // don't forget to activate/use the shader before setting uniforms!
-	//2 ways to set the texture unit;
-	// 
-	// either set it manually like so:
-	glUniform1i(glGetUniformLocation(ourShader2.ID, "texture1"), 0);
-	// or set it via the texture class
-	ourShader2.setInt("texture2", 1);
-
-
-
-
-
-
-
 
 
 
@@ -306,41 +283,6 @@ int main()
 		processInput(window);
 
 
-
-
-
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		{
-
-			if (mixVal <= 0.99f )
-			{
-				mixVal = mixVal + 0.01f;
-				std::cout << "Holding UP key\n";
-				std::cout << mixVal;
-			}
-
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		{
-
-
-			if (mixVal >= 0.01f)
-			{
-				mixVal = mixVal - 0.01f;
-
-				std::cout << "Holding DOWN key\n";
-				std::cout << mixVal;
-			}
-
-		}
-
-
-
-
-
-
-
 		// rendering commands here
 		//....
 		//for example 
@@ -356,20 +298,17 @@ int main()
 
 
 
-		// create transformations
-		glm::mat4 trans = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
-		// get matrix's uniform location and set matrix
-		ourShader.use();
-		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform"); //get the location of the uniform variable in the shader program
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans)); //set the uniform variable in the shader program with the value(trans)
+		//send the matrices to the shader 
+		int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));  
 
-		 
+		int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-		// set the texture mix value in the shader  
-		ourShader.setFloat("mixVal", mixVal);
+		int projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
 
 
 
@@ -380,42 +319,7 @@ int main()
 		//drawing triangle
 		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
-
-
-
-
-
-
-		// for second square
 		//------------------------------------------------------
-		//create transformations
-		glm::mat4 trans2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
-		trans2 = glm::scale(trans2, glm::vec3(sin((float)glfwGetTime()), sin((float)glfwGetTime()), sin((float)glfwGetTime()))); //scale to make it half
-
-		// get matrix's uniform location and set matrix
-		ourShader2.use();
-		unsigned int transformLoc2 = glGetUniformLocation(ourShader2.ID, "transform"); //get the location of the uniform variable in the shader program
-		glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(trans2)); //set the uniform variable in the shader program with the value(trans)
-
-		// set the texture mix value in the shader  
-		ourShader2.setFloat("mixVal", mixVal);
-
-		//render container
-		//------------------------------------------------------
-		//use shader program
-		ourShader2.use();
-		//drawing triangle
-		glBindVertexArray(VAO); //each time you're about the draw you need to tell opengl which vao to use. opengl uses global state and only one vao can be activated at a time.
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//------------------------------------------------------
-
-
-
-
-
 
 
 
